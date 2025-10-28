@@ -2,7 +2,21 @@ import React, { useState } from "react";
 import API from "../services/api";
 import ReactStars from "react-rating-stars-component";
 
-export default function FormularioReseña({ juegoId, onReseñaAgregada }) {
+const juegos = [
+  { id: "68feecb4b85dd92f00e804d6", nombre: "The Legend of Zelda" },
+  { id: "68fef83bb85dd92f00e804d9", nombre: "League of Legends" },
+  { id: "68ffd9a5cb0b91c181375229", nombre: "Fortnite" },
+  { id: "68ffdc8bcb0b91c18137522b", nombre: "Roblox" },
+  { id: "68ffdccecb0b91c18137522d", nombre: "Apex Legends" },
+  { id: "68ffdcfecb0b91c18137522f", nombre: "Minecraft" },
+  { id: "68ffdd63cb0b91c181375231", nombre: "Free Fire" },
+  { id: "68ffe0a7cb0b91c181375233", nombre: "Call of Duty: Warzone" },
+  { id: "68ffe151cb0b91c181375235", nombre: "Mortal Kombat" },
+  { id: "68ffe3f0cb0b91c181375237", nombre: "Brawlhalla" }
+];
+
+export default function FormularioReseña({ onReseñaAgregada }) {
+  const [juegoId, setJuegoId] = useState(juegos[0].id); 
   const [texto, setTexto] = useState("");
   const [estrellas, setEstrellas] = useState(5);
   const [loading, setLoading] = useState(false);
@@ -18,17 +32,14 @@ export default function FormularioReseña({ juegoId, onReseñaAgregada }) {
     setError(null);
     console.log("Datos enviados:", { juegoId, texto, puntuacion: estrellas });
 
-
     try {
       const nueva = { juegoId, texto, puntuacion: estrellas };
       // usar la variable correcta 'nueva' al enviar la petición
       const res = await API.post("/resenas", nueva);
-      onReseñaAgregada(res.data);
       setTexto("");
       setEstrellas(5);
     } catch (err) {
       console.error(err);
-      // si el servidor devuelve un mensaje, mostrarlo; si no, mostrar mensaje genérico
       const msg = err?.response?.data?.message || "Error al guardar la reseña";
       setError(msg);
     } finally {
@@ -49,6 +60,14 @@ export default function FormularioReseña({ juegoId, onReseñaAgregada }) {
     >
       <h4>Agregar reseña</h4>
       {error && <p style={{ color: "red" }}>{error}</p>}
+
+       {/* 🔹 Menú desplegable para elegir juego */}
+      <label>Selecciona un juego:</label>
+      <select value={juegoId} onChange={(e) => setJuegoId(e.target.value)} style={{ width: "100%", padding: 6, marginBottom: 10 }}>
+        {juegos.map((j) => (
+          <option key={j.id} value={j.id}>{j.nombre}</option>
+        ))}
+      </select>
 
       <textarea
         value={texto}
