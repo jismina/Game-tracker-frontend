@@ -19,6 +19,7 @@ export default function FormularioReseña({ onReseñaAgregada }) {
   const [juegoId, setJuegoId] = useState(juegos[0].id); 
   const [texto, setTexto] = useState("");
   const [estrellas, setEstrellas] = useState(5);
+  const [dificultad, setDificultad] = useState("Media");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -30,11 +31,11 @@ export default function FormularioReseña({ onReseñaAgregada }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    console.log("Datos enviados:", { juegoId, texto, puntuacion: estrellas });
+    console.log("Datos enviados:", { juegoId, textoReseña: texto, puntuacion: estrellas, dificultad });
 
     try {
-      const nueva = { juegoId, texto, puntuacion: estrellas };
-      // usar la variable correcta 'nueva' al enviar la petición
+      // Ajustar los campos para que coincidan con el schema del backend
+      const nueva = { juegoId, textoReseña: texto, puntuacion: estrellas, dificultad };
       const res = await API.post("/resenas", nueva);
       setTexto("");
       setEstrellas(5);
@@ -83,6 +84,15 @@ export default function FormularioReseña({ onReseñaAgregada }) {
           resize: "vertical",
         }}
       />
+
+      <div style={{ marginTop: 8 }}>
+        <label style={{ display: "block", marginBottom: 4 }}>Dificultad:</label>
+        <select value={dificultad} onChange={(e) => setDificultad(e.target.value)} style={{ padding: 6, borderRadius: 6 }} required>
+          <option value="Fácil">Fácil</option>
+          <option value="Media">Media</option>
+          <option value="Difícil">Difícil</option>
+        </select>
+      </div>
 
       <div style={{ marginTop: 8 }}>
         <label style={{ display: "block", marginBottom: 4 }}>Tu puntuación:</label>

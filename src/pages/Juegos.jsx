@@ -25,28 +25,10 @@ export default function Juegos() {
 
   return (
     <div className="p-6">
-      <h1>🎮 Lista de Juegos</h1>
+      <h1>Mi biblioteca</h1>
       <BibliotecaJuegos />
 
       <hr style={{ margin: "20px 0" }} />
-
-      {mostrarFormulario ? (
-        <FormularioReseña
-          reseñaSeleccionada={juegoSeleccionado}
-          onVolver={handleVolver}
-        />
-      ) : (
-        <>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <h2>📝 Reseñas</h2>
-            <button onClick={handleAgregarReseña}>Agregar Reseña</button>
-          </div>
-
-          <ListaReseñas onEditar={handleEditarReseña} />
-          <hr style={{ margin: "20px 0" }} />
-          <EstadisticasPersonales />
-        </>
-      )}
     </div>
   );
 }
